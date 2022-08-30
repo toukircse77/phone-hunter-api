@@ -37,7 +37,7 @@ phoneDiv.innerHTML = `
         <h5 class="card-title">${phone.phone_name}</h5>
         <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
       </div>
-      <button onclick ="loadPhoneDetails('${phone.slug}')" class="btn btn-primary">Show Details</button>
+      <button onclick ="loadPhoneDetails('${phone.slug}')" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Show Details</button>
       `
       phoneContainer.appendChild(phoneDiv);
 });
@@ -88,5 +88,16 @@ const loadPhoneDetails =(id) =>{
   const url =` https://openapi.programming-hero.com/api/phone/${id}`
   fetch(url)
   .then( res => res.json())
-  .then( data => console.log(data));
+  .then( data => displayPhoneDetail(data.data));
+}
+
+const displayPhoneDetail = phone =>{
+  const modalTitle = document.getElementById('modal-title')
+  modalTitle.innerText= phone.name;
+  const phnDetails = document.getElementById('modal-body');
+  phnDetails.innerHTML= `
+  <p>Release Date: ${phone.releaseDate ? phone.releaseDate : "No release date found"}</p>
+  <p>Storage: ${phone.mainFeatures ? phone.mainFeatures.storage : "No Storage information found"}</p>
+  <p>others: ${phone.others ? phone.others.Bluetooth : "no bluetooth found"}
+  `
 }
